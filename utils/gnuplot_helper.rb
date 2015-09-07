@@ -1,7 +1,7 @@
 require 'gnuplot'
 
 def decision_plot weights, groups
-  Gnuplot::Plot.new do |plot|    
+  out = Gnuplot::Plot.new do |plot|    
     groups.each do |data, label|
       plot.data << point_group(data, label)
     end
@@ -10,10 +10,12 @@ def decision_plot weights, groups
 
     yield plot if block_given?
   end
+
+  IRuby.display out
 end
 
 def cost_plot errors
-  Gnuplot::Plot.new do |plot|  
+  out = Gnuplot::Plot.new do |plot|  
     plot.data << Gnuplot::DataSet.new([(1..errors.count).to_a, errors]) do |ds|
       ds.with = 'linespoints'
       ds.linewidth = 3
@@ -22,6 +24,8 @@ def cost_plot errors
 
     yield plot if block_given?
   end
+
+  IRuby.display out
 end
 
 def decision_boundary w
